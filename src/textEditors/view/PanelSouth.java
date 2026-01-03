@@ -63,17 +63,17 @@ public class PanelSouth extends JPanel
 
 
 
-    public void addTestItems()
-    {
-        ArrayList<String> items = new ArrayList<>();
-
-        for (int i=0; i < 10; i++)
-        {
-            listModel.addElement("Thread status -  line " + i);
-        }
-        for (String item : items)
-            listModel.addElement(item);
-    }
+//    public void addTestItems()
+//    {
+//        ArrayList<String> items = new ArrayList<>();
+//
+//        for (int i=0; i < 10; i++)
+//        {
+//            listModel.addElement("Thread status -  line " + i);
+//        }
+//        for (String item : items)
+//            listModel.addElement(item);
+//    }
 
     public void setStatusText(String infoString)
     {

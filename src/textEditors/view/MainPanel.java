@@ -88,7 +88,7 @@ public class MainPanel extends JPanel {
 
 
         pnlSouth = new PanelSouth(controller, getWidth(), (int)(0.3*height));
-        pnlSouth.addTestItems();
+        //pnlSouth.addTestItems();
         add(pnlSouth, BorderLayout.SOUTH);
     }
     private void onFindReplace()

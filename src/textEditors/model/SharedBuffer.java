@@ -9,7 +9,8 @@ public class SharedBuffer {
     private int readPos = 0;
 
     public SharedBuffer(int size) {
-        buffer = new String[size];
+        //TODO
+        buffer = new String[size]; //change to 20
         status = new BufferStatus[size];
         for (int i = 0; i < size; i++)
             status[i] = BufferStatus.EMPTY;
@@ -37,16 +38,28 @@ public class SharedBuffer {
         notifyAll();
     }
 
+//    public synchronized boolean modify(String find, String replace) throws InterruptedException {
+//        for (int i = 0; i < status.length; i++) {
+//            if (status[i] == BufferStatus.NEW && buffer[i].contains(find)) {
+//                buffer[i] = buffer[i].replace(find, replace);
+//                status[i] = BufferStatus.CHECKED;
+//                notifyAll();
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+
     public synchronized String read() throws InterruptedException {
         while(status[readPos] != BufferStatus.CHECKED)
             wait();
 
 
-        String result = buffer[readPos];
+        String readLine = buffer[readPos];
         status[readPos] = BufferStatus.EMPTY;
         readPos = (readPos + 1) % buffer.length;
         notifyAll();
 
-        return result;
+        return readLine;
     }
 }
