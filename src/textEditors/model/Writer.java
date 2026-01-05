@@ -32,7 +32,7 @@ public class Writer extends Thread {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            controller.log("Writer " + sourceIndex + " wrote a new line");
+            controller.log("Writer " + getName() + " wrote line " + line);
         }
     }
 

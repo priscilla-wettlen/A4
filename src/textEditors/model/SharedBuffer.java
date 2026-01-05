@@ -5,12 +5,11 @@ public class SharedBuffer {
     private String[] buffer;
     private BufferStatus[] status;
     private int writePos = 0;
-    private int findPos = 0;
+    private int modifyPos = 0;
     private int readPos = 0;
 
     public SharedBuffer(int size) {
-        //TODO
-        buffer = new String[size]; //change to 20
+        buffer = new String[size];
         status = new BufferStatus[size];
         for (int i = 0; i < size; i++)
             status[i] = BufferStatus.EMPTY;
@@ -26,29 +25,25 @@ public class SharedBuffer {
         notifyAll();
     }
 
-    public synchronized void modify(String find, String replace) throws InterruptedException {
-        while(status[findPos] != BufferStatus.NEW)
-            wait();
+public synchronized boolean modify(String find, String replace)
+        throws InterruptedException {
 
-        if (buffer[findPos].contains(find))
-            buffer[findPos] = buffer[findPos].replace(find, replace);
+    while (status[modifyPos] != BufferStatus.NEW)
+        wait();
 
-        status[findPos] = BufferStatus.CHECKED;
-        findPos = (findPos + 1) % buffer.length;
-        notifyAll();
+    boolean replaced = false;
+
+    if (buffer[modifyPos].contains(find)) {
+        buffer[modifyPos] = buffer[modifyPos].replace(find, replace);
+        replaced = true;
     }
 
-//    public synchronized boolean modify(String find, String replace) throws InterruptedException {
-//        for (int i = 0; i < status.length; i++) {
-//            if (status[i] == BufferStatus.NEW && buffer[i].contains(find)) {
-//                buffer[i] = buffer[i].replace(find, replace);
-//                status[i] = BufferStatus.CHECKED;
-//                notifyAll();
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+    status[modifyPos] = BufferStatus.CHECKED;
+    modifyPos = (modifyPos + 1) % buffer.length;
+    notifyAll();
+
+    return replaced;
+}
 
     public synchronized String read() throws InterruptedException {
         while(status[readPos] != BufferStatus.CHECKED)

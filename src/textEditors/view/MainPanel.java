@@ -88,7 +88,7 @@ public class MainPanel extends JPanel {
 
 
         pnlSouth = new PanelSouth(controller, getWidth(), (int)(0.3*height));
-        //pnlSouth.addTestItems();
+
         add(pnlSouth, BorderLayout.SOUTH);
     }
     private void onFindReplace()
@@ -102,21 +102,16 @@ public class MainPanel extends JPanel {
     //method that marks all the words that contain the string we want to replace
     public void markWord(String findString){
         try {
-            //get the text from the source file
             String text = taSource.getText();
             int lastIndex = 0;
-            //loop through the whole text to find the string we are looking for
             while(lastIndex != -1){
                 lastIndex = text.indexOf(findString, lastIndex);
                 if(lastIndex != -1){
                     Highlighter highlighter = taSource.getHighlighter();
                     Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.pink);
-                    //get the start and the end position of the string
                     int a = lastIndex;
                     int b = a + findString.length();
-                    //once the string is found, highlight that string
                     highlighter.addHighlight(a, b, highlightPainter);
-                    //update the lastIndex
                     lastIndex += findString.length();
                 }
             }

@@ -16,35 +16,17 @@ public class Modifier extends Thread
         this.controller = controller;
     }
 
-    @Override
-    public void run() {
-        while (true)
-        {
-            try {
-                Thread.sleep(100);
-                buffer.modify(find, replace);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            @Override
+            public void run() {
+                try {
+                    while (true) {
+                        boolean replaced = buffer.modify(find, replace);
+                        if (replaced) {
+                            controller.log("Modifier " + getName() + " replaced '" + find + "' with '" + replace + "'");
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
-//            controller.log("Modifier "  + " modified line");
-            controller.log("Modifier " + getName() + " changed line " + "'" + find + "' " + "with " + "'" + replace + "'");
-        }
-    }
-//@Override
-//public void run() {
-//    try {
-//        while (true) {
-//            boolean modified = buffer.modify(find, replace);
-//            if (modified) {
-//                controller.log(
-//                        "Modifier " + getName() + " changed line " + "'" + find + "' " + "with " + "'" + replace + "'"
-//                );
-//            } else {
-//                break; // no more work to do
-//            }
-//        }
-//    } catch (InterruptedException e) {
-//        Thread.currentThread().interrupt();
-//    }
-//}
 }

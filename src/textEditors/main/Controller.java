@@ -27,27 +27,17 @@ public class Controller
 
     public void execute(String[] text, String find, String replace)
     {
-        // Prepare source and destination
         sourceLines = Arrays.asList(text);
         outputLines.clear();
-
-        // Create shared bounded buffer
         buffer = new SharedBuffer(20);
-
-        // Clear logbook (optional but recommended)
-        //view.clearLogbook();
-
-        // Highlight words in source text (GUI action → Controller → View)
         view.markWord(find);
         view.markReplacedWord(replace);
 
-        for (int i = 0; i < 3; i++)
-        {
+        for (int i = 0; i < 3; i++) { //3 writing threads
             new Writer(sourceLines, buffer,this).start();
         }
 
-        for (int i = 0; i < 4; i++)
-        {
+        for (int i = 0; i < 4; i++) { //4 mod threads
             new Modifier(buffer,find,replace,this).start();
         }
 
